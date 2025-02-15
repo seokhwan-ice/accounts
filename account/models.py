@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=15, unique=True)
-    name = models.CharField(max_length=10)
+    nickname = models.CharField(max_length=15, unique=True, null=True, blank=True)
+    name = models.CharField(max_length=10, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     profile_image = models.ImageField(
         upload_to="user/image/%Y/%m/%d/", null=True, blank=True
@@ -16,7 +16,8 @@ class User(AbstractUser):
         unique=True,
         validators=[RegexValidator(r"010-?[1-9]\d{3}-\d{4}")],
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True),
     
+
     def __str__(self):
         return self.username

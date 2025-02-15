@@ -33,3 +33,26 @@ class UserCreateView(APIView):
 
         serializer = UserSerializer(user)
         return Response(serializer.data, status=201)
+    
+class UserSigninView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        user = authenticate(username=username, password=password)
+        if not user:
+            return Response(
+                {"message": "아이디 또는 비밀번호가 틀렸습니다"}, status=400
+            )
+
+        refresh = RefreshToken.for_user(user)
+
+        serializer = UserSerializer(user)
+
+        return Response(
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "user_info": serializer.data,
+            }
+        )
