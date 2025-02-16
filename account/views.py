@@ -8,10 +8,19 @@ from .models import User
 from .validators import validate_user_data
 from .serializers import (
     UserSerializer,
+    UserSignupSerializer
     )
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 class UserCreateView(APIView):
+    
+    @swagger_auto_schema(
+        request_body=UserSerializer,
+        responses={201: openapi.Response('Signup successful', UserSerializer)}
+    )    
+    
     def post(self, request):
         # 유효성 검사
         rlt_message = validate_user_data(request.data)
@@ -34,7 +43,14 @@ class UserCreateView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=201)
     
+
+
 class UserSigninView(APIView):
+    @swagger_auto_schema(
+    request_body=UserSignupSerializer,
+    responses={201: openapi.Response('Login successful', UserSignupSerializer)}
+)
+
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
