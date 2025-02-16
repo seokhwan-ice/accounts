@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserSignupSerializer(serializers.Serializer):
+class UserSigninSerializer(serializers.Serializer):
     username = serializers.CharField(help_text="id")
     password = serializers.CharField(help_text="password")
     

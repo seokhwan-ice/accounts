@@ -8,7 +8,7 @@ from .models import User
 from .validators import validate_user_data
 from .serializers import (
     UserSerializer,
-    UserSignupSerializer
+    UserSigninSerializer,
     )
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -47,8 +47,8 @@ class UserCreateView(APIView):
 
 class UserSigninView(APIView):
     @swagger_auto_schema(
-    request_body=UserSignupSerializer,
-    responses={201: openapi.Response('Login successful', UserSignupSerializer)}
+    request_body=UserSigninSerializer,
+    responses={201: openapi.Response('Login successful', UserSigninSerializer)}
 )
 
     def post(self, request):
@@ -69,6 +69,6 @@ class UserSigninView(APIView):
             {
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
-                "user_info": serializer.data,
             }
         )
+    
